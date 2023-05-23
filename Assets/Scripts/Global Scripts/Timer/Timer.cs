@@ -14,6 +14,7 @@ public class Timer : MonoBehaviour
     private float timeLeft; // current time left
     private bool isFlashing = false; // flag to indicate if the sprite is currently flashing
     private bool hasMoved = false; // flag to indicate if the player has moved
+    private bool canDie = true; // flag to indicate if the player can die
 
     private void Start()
     {
@@ -32,7 +33,7 @@ public class Timer : MonoBehaviour
     private void Countdown()
     {
         timeLeft -= 1.0f;
-        if (timeLeft <= 0)
+        if (timeLeft <= 0 && canDie == true)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             return;
@@ -63,4 +64,6 @@ public class Timer : MonoBehaviour
 
         isFlashing = false;
     }
+
+    public bool CanDie { get => canDie; set => canDie = value; }
 }

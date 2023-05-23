@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     [SerializeField] private int maxJumps = 2, currentJumps = 2;
     [SerializeField] private float horizontal, speed = 8f, jumpingPower = 16f, dashingPower = 24f, dashingTime = 0.2f, dashingCooldown = 1f;
     [SerializeField] private bool isFacingRight = true, canDash = true, isDashing;
