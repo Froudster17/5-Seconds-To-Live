@@ -12,37 +12,43 @@ public class Timer : MonoBehaviour
     public Color flashColor = Color.red; // color to flash when time gets less
 
     private float timeLeft; // current time left
-    public float flashSpeed = 2.0f; // speed of color transition
     private bool isFlashing = false; // flag to indicate if the sprite is currently flashing
+    private bool hasMoved = false; // flag to indicate if the player has moved
 
-    void Start()
+    private void Start()
     {
         timeLeft = maxTime;
-        InvokeRepeating("Countdown", 1.0f, 1.0f);
     }
 
-    void Countdown()
+    private void Update()
+    {
+        if (!hasMoved && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
+        {
+            hasMoved = true;
+            InvokeRepeating(nameof(Countdown), 1.0f, 1.0f);
+        }
+    }
+
+    private void Countdown()
     {
         timeLeft -= 1.0f;
         if (timeLeft <= 0)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            return;
         }
 
         if (!isFlashing && timeLeft <= 10.0f) // check if time is less than or equal to 10 seconds
         {
             isFlashing = true;
-            StartFlash();
+            StartCoroutine(FlashCoroutine());
         }
     }
 
-    void StartFlash()
+    private System.Collections.IEnumerator FlashCoroutine()
     {
-        StartCoroutine(FlashCoroutine());
-    }
+        float flashSpeed = 2.0f; // initial speed of color transition
 
-    System.Collections.IEnumerator FlashCoroutine()
-    {
         while (timeLeft > 0 && isFlashing)
         {
             float t = Mathf.PingPong(Time.time * flashSpeed, 1.0f); // calculate ping pong value between 0 and 1
@@ -56,10 +62,5 @@ public class Timer : MonoBehaviour
         }
 
         isFlashing = false;
-    }
-
-    void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 100, 20), "Time Left: " + Mathf.RoundToInt(timeLeft));
     }
 }
