@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ExitChecker : MonoBehaviour
 {
-    [SerializeField] private BoxCollider2D boxCollider2D;
     [SerializeField] private Animator animator;
 
     private Timer timer;
@@ -13,6 +10,11 @@ public class ExitChecker : MonoBehaviour
     private void Start()
     {
         timer = FindObjectOfType<Timer>();
+
+        if (animator == null)
+        {
+            Debug.LogError("Animator component is not assigned.");
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -26,7 +28,15 @@ public class ExitChecker : MonoBehaviour
 
         // Delay the scene change based on the animation length
         float animationLength = GetAnimationLength("Start");
-        Invoke(nameof(LoadNextScene), animationLength);
+        if (animationLength > 0)
+        {
+            Invoke(nameof(LoadNextScene), animationLength);
+        }
+        else
+        {
+            Debug.LogWarning("Animation clip not found for trigger 'Start'.");
+            LoadNextScene();
+        }
     }
 
     private float GetAnimationLength(string triggerName)
