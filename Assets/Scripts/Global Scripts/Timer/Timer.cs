@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
@@ -19,56 +18,59 @@ public class Timer : MonoBehaviour
     private bool canDie = true; // flag to indicate if the player can die
     private bool canMove = false;
     private bool countdownStarted = false;
-    [SerializeField] private float waitTime = 2f;
+    private float waitTime = 2f;
+    private Coroutine countdownCoroutine;
+    private const float movementThreshold = 0.5f; // Adjust this value to define the movement threshold
 
     private void Start()
     {
         timeLeft = maxTime;
-        startPos = gameObject.transform.position;
+        startPos = transform.position;
     }
 
     private void Update()
     {
-        if (canMove == false)
+        if (!canMove)
         {
             waitTime -= Time.deltaTime;
             if (waitTime <= 0)
             {
                 canMove = true;
+                hasMoved = false; // Reset hasMoved flag when the waiting period is over
             }
             return;
         }
 
-        if (startPos != (Vector2)transform.position)
+        if (!hasMoved && Vector2.Distance(startPos, transform.position) >= movementThreshold)
         {
             hasMoved = true;
-        }
-
-
-        if (hasMoved && !countdownStarted)
-        {
             countdownStarted = true;
-            InvokeRepeating(nameof(Countdown), 1.0f, 1.0f);
+            countdownCoroutine = StartCoroutine(CountdownCoroutine());
         }
     }
 
-    private void Countdown()
+    private IEnumerator CountdownCoroutine()
     {
-        timeLeft -= 1.0f;
-        if (timeLeft <= 0 && canDie == true)
+        while (timeLeft > 0 && canDie)
+        {
+            timeLeft -= 1.0f;
+
+            if (!isFlashing && timeLeft <= 10.0f) // check if time is less than or equal to 10 seconds
+            {
+                isFlashing = true;
+                StartCoroutine(FlashCoroutine());
+            }
+
+            yield return new WaitForSeconds(1.0f);
+        }
+
+        if (timeLeft <= 0 && canDie)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            return;
-        }
-
-        if (!isFlashing && timeLeft <= 10.0f) // check if time is less than or equal to 10 seconds
-        {
-            isFlashing = true;
-            StartCoroutine(FlashCoroutine());
         }
     }
 
-    private System.Collections.IEnumerator FlashCoroutine()
+    private IEnumerator FlashCoroutine()
     {
         float flashSpeed = 2.0f; // initial speed of color transition
 
