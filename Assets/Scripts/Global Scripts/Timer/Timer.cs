@@ -11,21 +11,43 @@ public class Timer : MonoBehaviour
     public Color originalColor = Color.white; // original color of the sprite
     public Color flashColor = Color.red; // color to flash when time gets less
 
+    private Vector2 startPos;
+
     private float timeLeft; // current time left
     private bool isFlashing = false; // flag to indicate if the sprite is currently flashing
     private bool hasMoved = false; // flag to indicate if the player has moved
     private bool canDie = true; // flag to indicate if the player can die
+    private bool canMove = false;
+    private bool countdownStarted = false;
+    [SerializeField] private float waitTime = 2f;
 
     private void Start()
     {
         timeLeft = maxTime;
+        startPos = gameObject.transform.position;
     }
 
     private void Update()
     {
-        if (!hasMoved && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
+        if (canMove == false)
+        {
+            waitTime -= Time.deltaTime;
+            if (waitTime <= 0)
+            {
+                canMove = true;
+            }
+            return;
+        }
+
+        if (startPos != (Vector2)transform.position)
         {
             hasMoved = true;
+        }
+
+
+        if (hasMoved && !countdownStarted)
+        {
+            countdownStarted = true;
             InvokeRepeating(nameof(Countdown), 1.0f, 1.0f);
         }
     }

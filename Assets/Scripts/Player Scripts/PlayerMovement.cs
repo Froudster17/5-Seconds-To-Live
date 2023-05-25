@@ -6,15 +6,28 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private int maxJumps = 2, currentJumps = 2;
     [SerializeField] private float horizontal, speed = 8f, jumpingPower = 16f, dashingPower = 24f, dashingTime = 0.2f, dashingCooldown = 1f;
-    [SerializeField] private bool isFacingRight = true, canDash = true, isDashing;
+    [SerializeField] private bool isFacingRight = true, canDash = true, isDashing, canMove = false;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator animator;
 
+    [SerializeField] private float waitTime = 1f;
+
     void Update()
     {
+        if (canMove == false)
+        {
+            waitTime -= Time.deltaTime;
+            if (waitTime <= 0)
+            {
+                canMove = true;
+            }
+            return;
+        }
+
+
         if (isDashing)
         {
             return;
