@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
             currentJumps -= 1;
+            FindAnyObjectByType<AudioManager>().Play("Jump");
         }
 
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
@@ -103,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        FindAnyObjectByType<AudioManager>().Play("Dash");
         canDash = false;
         isDashing = true;
         float originalGravity = rb.gravityScale;

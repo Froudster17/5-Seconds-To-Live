@@ -978,6 +978,7 @@ MonoBehaviour:
   playerSpriteRenderer: {fileID: 83415148}
   originalColor: {r: 1, g: 1, b: 1, a: 1}
   flashColor: {r: 1, g: 0, b: 0, a: 1}
+  timeLeft: 0
 --- !u!1 &188925148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,7 +1157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da3e8f751392de546806518047fb99dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider2D: {fileID: 385829781}
 --- !u!61 &385829781
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1269,7 +1269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab9472fa94da1a4bb9186b7635e747b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider2D: {fileID: 476857559}
   animator: {fileID: 2040362091}
 --- !u!1 &515579764
 GameObject:
@@ -1993,7 +1992,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da3e8f751392de546806518047fb99dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider2D: {fileID: 1138812742}
 --- !u!61 &1138812742
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour
 
     private Vector2 startPos;
 
-    private float timeLeft; // current time left
+    public float timeLeft; // current time left
     private bool isFlashing = false; // flag to indicate if the sprite is currently flashing
     private bool hasMoved = false; // flag to indicate if the player has moved
     private bool canDie = true; // flag to indicate if the player can die

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,34 +27,15 @@ public class ExitChecker : MonoBehaviour
 
         animator.SetTrigger("Start");
 
-        // Delay the scene change based on the animation length
-        float animationLength = GetAnimationLength("Start");
-        if (animationLength > 0)
-        {
-            Invoke(nameof(LoadNextScene), animationLength);
-        }
-        else
-        {
-            Debug.LogWarning("Animation clip not found for trigger 'Start'.");
-            LoadNextScene();
-        }
+        StartCoroutine(LoadNextScene());   
     }
 
-    private float GetAnimationLength(string triggerName)
+    private IEnumerator LoadNextScene()
     {
-        RuntimeAnimatorController ac = animator.runtimeAnimatorController;
-        for (int i = 0; i < ac.animationClips.Length; i++)
-        {
-            if (ac.animationClips[i].name == triggerName)
-            {
-                return ac.animationClips[i].length;
-            }
-        }
-        return 0f;
-    }
 
-    private void LoadNextScene()
-    {
+        yield return new WaitForSeconds(1f);
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
 }
